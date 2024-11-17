@@ -16,7 +16,9 @@ namespace JO.DataTransferObject
         public int GetSkip()
         {
             if(Page <= 0)
+            {
                 return 0;
+            }
 
             int skip = (Page ?? 0) * (Size ?? 0);
             skip -= (Size ?? 0);

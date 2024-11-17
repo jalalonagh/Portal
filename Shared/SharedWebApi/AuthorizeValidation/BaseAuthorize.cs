@@ -27,12 +27,16 @@ namespace SharedWebApi.AuthorizeValidation
 
             var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
             if (allowAnonymous)
+            {
                 return;
+            }
 
             string token = (context.HttpContext?.Request?.Headers["Authorization"].FirstOrDefault() ?? "").Split(" ").Last();
 
             if (!string.IsNullOrEmpty(token))
+            {
                 context.HttpContext.User = service.Validate(token);
+            }
 
             if (!(context.HttpContext.User.Identity?.IsAuthenticated ?? false))
             {

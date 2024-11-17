@@ -18,7 +18,7 @@ namespace ApplicationService.UserManager
         private readonly ITokenService _tokenService;
         private readonly IEfCoreRepository<User> repo;
 
-        public UserAppServices(IJOMapper _mapper,
+        public UserAppServices(IJOMapper mapper,
             DomainManager<User> _domainManager,
             IEfCoreRepository<User> _repo,
             UserDomain domain,
@@ -29,6 +29,7 @@ namespace ApplicationService.UserManager
             _manager = manager;
             _tokenService = tokenService;
             repo = _repo;
+            _mapper = mapper;
         }
 
         public async Task<UserVM?> FindAsync(CancellationToken cancellation, long id)
@@ -48,28 +49,34 @@ namespace ApplicationService.UserManager
 
             var user = await _domain.FindAsync(cancellation, f => f.UserName == dto.UserName);
 
-            if (user == null) throw new Exception("کاربر یافت نشد");
+            if (user == null)
+            {
+                throw new Exception("کاربر یافت نشد");
+            }
 
             var passResult = await _manager.CheckPasswordAsync(user, dto.Password);
 
-            if (passResult)
+            if (!passResult)
             {
-                var token = _tokenService.CreateToken(dto.UserName, user.Id);
-
-                return new LoginVM()
-                {
-                    Token = token,
-                };
+                throw new Exception("رمز ارسالی یا شناسه کاربری صحیح نیست");
             }
 
-            throw new Exception("رمز ارسالی یا شناسه کاربری صحیح نیست");
+            var token = _tokenService.CreateToken(dto.UserName, user.Id);
+
+            return new LoginVM()
+            {
+                Token = token,
+            };
         }
 
         public async Task<string> LoginSwaggerAsync(CancellationToken cancellation, LoginSwaggerDTO dto)
         {
             var user = await _domain.FindAsync(cancellation, f => f.UserName == dto.UserName);
 
-            if (user == null) throw new Exception("کاربر یافت نشد");
+            if (user == null)
+            {
+                throw new Exception("کاربر یافت نشد");
+            }
 
             var passResult = await _manager.CheckPasswordAsync(user, dto.Password);
 

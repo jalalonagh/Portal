@@ -1,6 +1,6 @@
 ﻿namespace JO.Data.Base.Constants
 {
-    public class Schemas
+    public static class Schemas
     {
         public static string Temp => "Temp";
         public static string Basic => "Basic";

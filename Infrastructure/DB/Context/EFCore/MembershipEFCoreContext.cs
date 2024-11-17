@@ -21,7 +21,9 @@ namespace Infrastructure.DB.Context.EFCore
             base.OnModelCreating(modelBuilder);
 
             if (modelBuilder == null)
+            {
                 return;
+            }
 
             modelBuilder.RegisterAllEntities<IJOEntity>(typeof(User).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(User).Assembly);

@@ -14,31 +14,6 @@ namespace JO.Response.Base
             StatusCode = statusCode;
             Message = message ?? statusCode.ToDisplay();
         }
-
-        public static ApiResult NotFound(string message)
-        {
-            return new ApiResult(false, ApiResultStatusCode.NotFound, message);
-        }
-
-        public static ApiResult OperationFailed(string message)
-        {
-            return new ApiResult(false, ApiResultStatusCode.ServerError, message);
-        }
-
-        public static ApiResult BusinessFailed(string message)
-        {
-            return new ApiResult(false, ApiResultStatusCode.LogicError, message);
-        }
-
-        public static ApiResult Success(string? message)
-        {
-            return new ApiResult(true, ApiResultStatusCode.Success, message);
-        }
-
-        public static ApiResult Invalid(string message)
-        {
-            return new ApiResult(false, ApiResultStatusCode.BadRequest, message);
-        }
     }
 
     public class ApiResult<TData> : ApiResult
@@ -50,31 +25,6 @@ namespace JO.Response.Base
             : base(isSuccess, statusCode, message)
         {
             Data = data;
-        }
-
-        public static ApiResult<TData> NotFound(string message, TData? data = null)
-        {
-            return new ApiResult<TData>(false, ApiResultStatusCode.NotFound, data, message);
-        }
-
-        public static ApiResult<TData> OperationFailed(string message, TData? data = null)
-        {
-            return new ApiResult<TData>(false, ApiResultStatusCode.ServerError, data, message);
-        }
-
-        public static ApiResult<TData> BusinessFailed(string message, TData? data = null)
-        {
-            return new ApiResult<TData>(false, ApiResultStatusCode.LogicError, data, message);
-        }
-
-        public static ApiResult<TData> Success(TData data, string? message = null)
-        {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, data, message);
-        }
-
-        public static ApiResult<TData> Invalid(string message)
-        {
-            return new ApiResult<TData>(false, ApiResultStatusCode.BadRequest, null, message);
         }
 
         #region Implicit Operators

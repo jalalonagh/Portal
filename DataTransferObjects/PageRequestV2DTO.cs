@@ -18,7 +18,9 @@ namespace DataTransferObjects
         public bool HasOrder()
         {
             if(Order == null || !Order.Any())
+            {
                 return false;
+            }
 
             return true;
         }
@@ -26,7 +28,9 @@ namespace DataTransferObjects
         public bool HasText2Search()
         {
             if (Search == null || string.IsNullOrEmpty(Search.Value) || string.IsNullOrWhiteSpace(Search.Value))
+            {
                 return false;
+            }
 
             return true;
         }

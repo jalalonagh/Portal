@@ -125,7 +125,9 @@ namespace Core
         public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
+            {
                 throw new Exception("موجودیت بدون مقدار است");
+            }
 
             entity.Validate();
 
@@ -135,10 +137,16 @@ namespace Core
         public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             foreach (var item in entities)
+            {
                 if (item == null)
+                {
                     throw new Exception("موجودیت بدون مقدار است");
+                }
                 else
+                {
                     item.Validate();
+                }
+            }
 
             return await repository.InsertManyAsync(cancellationToken, entities).ConfigureAwait(false);
         }
@@ -148,7 +156,9 @@ namespace Core
         public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
+            {
                 throw new Exception("موجودیت بدون مقدار است");
+            }
 
             entity.Validate();
 
@@ -158,10 +168,16 @@ namespace Core
         public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             foreach (var item in entities)
+            {
                 if (item == null)
+                {
                     throw new Exception("موجودیت بدون مقدار است");
+                }
                 else
+                {
                     item.Validate();
+                }
+            }
 
             return await repository.UpdateManyAsync(cancellationToken, entities).ConfigureAwait(false);
         }
