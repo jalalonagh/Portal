@@ -17,29 +17,36 @@ namespace Core
         }
 
         #region Delete
-        public async Task<List<TEntity>?> DeleteDirectAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predict, bool autoSave = true)
+        public async Task<List<TEntity>?> DeleteDirectAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predict)
         {
-            return await repository.DeleteDirectAsync(cancellationToken, predict, autoSave).ConfigureAwait(false);
+            return await repository.DeleteDirectAsync(cancellationToken, predict).ConfigureAwait(false);
         }
 
-        public async Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
+            {
                 throw new Exception("موجودیت بدون مقدار است");
+            }
+
             entity.Validate();
 
-            return await repository.DeleteAsync(cancellationToken, entity, autoSave).ConfigureAwait(false);
+            return await repository.DeleteAsync(cancellationToken, entity).ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             foreach (var item in entities)
                 if (item == null)
+                {
                     throw new Exception("موجودیت بدون مقدار است");
+                }
                 else
+                {
                     item.Validate();
+                }
 
-            return repository.DeleteManyAsync(cancellationToken, entities, autoSave);
+            return repository.DeleteManyAsync(cancellationToken, entities);
         }
         #endregion
 
@@ -115,17 +122,17 @@ namespace Core
         #endregion
 
         #region Insert
-        public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
                 throw new Exception("موجودیت بدون مقدار است");
 
             entity.Validate();
 
-            return await repository.InsertAsync(cancellationToken, entity, autoSave).ConfigureAwait(false);
+            return await repository.InsertAsync(cancellationToken, entity).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             foreach (var item in entities)
                 if (item == null)
@@ -133,22 +140,22 @@ namespace Core
                 else
                     item.Validate();
 
-            return await repository.InsertManyAsync(cancellationToken, entities, autoSave).ConfigureAwait(false);
+            return await repository.InsertManyAsync(cancellationToken, entities).ConfigureAwait(false);
         }
         #endregion
 
         #region Update
-        public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
                 throw new Exception("موجودیت بدون مقدار است");
 
             entity.Validate();
 
-            return await repository.UpdateAsync(cancellationToken, entity, autoSave).ConfigureAwait(false);
+            return await repository.UpdateAsync(cancellationToken, entity).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             foreach (var item in entities)
                 if (item == null)
@@ -156,7 +163,7 @@ namespace Core
                 else
                     item.Validate();
 
-            return await repository.UpdateManyAsync(cancellationToken, entities, autoSave).ConfigureAwait(false);
+            return await repository.UpdateManyAsync(cancellationToken, entities).ConfigureAwait(false);
         }
         #endregion
     }

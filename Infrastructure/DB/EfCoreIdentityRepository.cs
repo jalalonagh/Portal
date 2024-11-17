@@ -54,7 +54,9 @@ namespace Infrastructure.DB
         public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
         {
             if (entities == null || !entities.Any())
+            {
                 return null;
+            }
 
             foreach (var item in entities)
             {
@@ -80,7 +82,9 @@ namespace Infrastructure.DB
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
             if (ccy == null || entity.ConcurrencyStatus != ccy)
+            {
                 throw new Exception("مقدار Concurency صحیح نمی باشد.");
+            }
 
             entity.ReNewConcurrency();
             entity.SetTimeNow();
@@ -103,7 +107,9 @@ namespace Infrastructure.DB
         public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
         {
             if (entities == null || !entities.Any())
+            {
                 return null;
+            }
 
             var items = await dbset.AsNoTracking()
                 .Where(w => entities.Select(s => s.Id).Contains(w.Id))
@@ -114,7 +120,9 @@ namespace Infrastructure.DB
                 var ccy = (items.FirstOrDefault(f => f.Id.Equals(item.Id)))?.ConcurrencyStatus;
 
                 if (ccy == null || item.ConcurrencyStatus != ccy)
+                {
                     throw new Exception("یکی از مقادیر Concurency صحیح ندارد.");
+                }
 
                 item.SetTimeNow();
                 item.ReNewConcurrency();
@@ -138,7 +146,9 @@ namespace Infrastructure.DB
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
             if (ccy == null || entity.ConcurrencyStatus != ccy)
+            {
                 throw new Exception("مقدار Concurency صحیح نمی باشد.");
+            }
 
             entity.SetTimeNow();
 
@@ -156,7 +166,9 @@ namespace Infrastructure.DB
         public async Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = false)
         {
             if (entities == null || !entities.Any())
+            {
                 return null;
+            }
 
             var items = await dbset.AsNoTracking()
                 .Where(w => entities.Select(s => s.Id).Contains(w.Id))
@@ -167,7 +179,9 @@ namespace Infrastructure.DB
                 var ccy = (items.FirstOrDefault(f => f.Id.Equals(item.Id)))?.ConcurrencyStatus;
 
                 if (ccy == null || item.ConcurrencyStatus != ccy)
+                {
                     throw new Exception("یکی از مقادیر Concurency صحیح ندارد.");
+                }
 
                 item.SetTimeNow();
             }
@@ -201,8 +215,12 @@ namespace Infrastructure.DB
                 .Where(predicate);
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query
                 .SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -228,8 +246,12 @@ namespace Infrastructure.DB
                 .AsQueryable();
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -308,8 +330,12 @@ namespace Infrastructure.DB
                 .AsQueryable();
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -354,8 +380,12 @@ namespace Infrastructure.DB
             }
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -377,8 +407,12 @@ namespace Infrastructure.DB
             }
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     queryable = queryable.Include(item);
+                }
+            }
 
             var items = await queryable
                 .Skip(pagedRequest.SkipCount ?? 0)

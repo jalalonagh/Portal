@@ -31,12 +31,12 @@
             return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
-        public static bool operator ==(ValueObject<VO> one, ValueObject<VO> two)
+        public static bool operator == (ValueObject<VO> one, ValueObject<VO> two)
         {
             return EqualOperator(one, two);
         }
 
-        public static bool operator !=(ValueObject<VO> one, ValueObject<VO> two)
+        public static bool operator != (ValueObject<VO> one, ValueObject<VO> two)
         {
             return NotEqualOperator(one, two);
         }

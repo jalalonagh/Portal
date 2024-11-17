@@ -37,23 +37,33 @@ namespace JO.Data.Base
             Search = search;
 
             if (Start <= 0)
+            {
                 Start = 0;
+            }
 
             if (Length > 500)
+            {
                 throw new ArgumentException("در این سرویس امکان درخواست بیشتر از 500 رکورد مقدور نمی باشد .");
+            }
 
             if (AllowedColumns == null ||
                 !AllowedColumns.Any() ||
                 !AllowedColumns.Where(w => !string.IsNullOrWhiteSpace(w) && !string.IsNullOrEmpty(w)).Any())
+            {
                 throw new ArgumentException("ستون های مجاز تعریف نشده است");
+            }
 
             if (string.IsNullOrEmpty(Columns) && string.IsNullOrWhiteSpace(Columns))
+            {
                 Columns = "*";
+            }
 
             if (Columns != "*")
             {
                 if (!Regex.IsMatch(Columns, "^[a-zA-Z0-9_]+(,[a-zA-Z0-9_]+)*$"))
+                {
                     throw new ArgumentException("معرفی ستون ها معتبر نیست . موارد مجاز در معرفی ستون ها حروف لاتین و عدد و زیر خط می باشد و برای جداسازی ستون ها از ویرگول لاتین استفاده شود");
+                }
 
                 var cList = Columns.Split(",").Select(s => s.Trim());
                 var aList = cList.Intersect(AllowedColumns);
@@ -61,13 +71,17 @@ namespace JO.Data.Base
                 Columns = string.Join(",", aList);
             }
             else
+            {
                 Columns = string.Join(",", AllowedColumns);
+            }
         }
 
         public bool HasOrder()
         {
             if (Order == null || !Order.Any())
+            {
                 return false;
+            }
 
             return true;
         }
@@ -75,7 +89,9 @@ namespace JO.Data.Base
         public bool HasText2Search()
         {
             if (Search == null || string.IsNullOrEmpty(Search.Value) || string.IsNullOrWhiteSpace(Search.Value))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -83,7 +99,9 @@ namespace JO.Data.Base
         public List<KeyValuePair<string, bool>> GetOrderKeys()
         {
             if(Order == null || !Order.Any())
+            {
                 return new List<KeyValuePair<string, bool>>();
+            }
 
             return Order.Select(s => new KeyValuePair<string, bool>(s.Name, s.Dir.Trim().ToLower() == "asc")).ToList();
         }

@@ -55,14 +55,22 @@ namespace JO.Shared.Classes.Captcha
                     {
                         newX = (int)(x + (distortion * Math.Sin(Math.PI * y / 64.0)));
                         newY = (int)(y + (distortion * Math.Cos(Math.PI * x / 64.0)));
-                        if (newX < 0 || newX >= imageWidth) newX = 0;
-                        if (newY < 0 || newY >= imageHeight) newY = 0;
+                        if (newX < 0 || newX >= imageWidth)
+                        {
+                            newX = 0;
+                        }
+                        if (newY < 0 || newY >= imageHeight)
+                        {
+                            newY = 0;
+                        }
                         cache.SetPixel(x, y, captchaImage.GetPixel(newX, newY));
                     }
                 }
 
                 if (imgFormat == null)
+                {
                     imgFormat = ImageFormat.Jpeg;
+                }
 
                 cache.Save(memoryStream, imgFormat);
                 memoryStream.Position = 0;

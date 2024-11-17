@@ -18,7 +18,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.Json.Serialization;
 
-internal class Program
+internal static class Program
 {
     private static readonly string cors = "_myAllowSpecificOrigins";
     private static async Task Main(string[] args)
@@ -173,8 +173,12 @@ internal class Program
         {
             var text = DateTime.Now.ToString() + Environment.NewLine + "--------------------------------------" + Environment.NewLine + Newtonsoft.Json.JsonConvert.SerializeObject(e);
             if (!File.Exists("start_error.txt"))
+            {
                 File.Create("start_error.txt").Close();
+            }
+
             File.WriteAllText("start_error.txt", text);
+
             throw;
         }
     }

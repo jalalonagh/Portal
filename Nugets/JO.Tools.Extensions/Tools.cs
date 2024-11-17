@@ -61,7 +61,9 @@ namespace JO.Tools.Extensions
         public static string PerisanDate(string date, bool isBancsRX = false)
         {
             if (date == "")
+            {
                 return date;
+            }
 
             try
             {
@@ -151,9 +153,13 @@ namespace JO.Tools.Extensions
                 foreach (PropertyInfo propertyInfo in type.GetProperties())
                 {
                     if (propertyInfo.Name == column.ColumnName)
+                    {
                         propertyInfo.SetValue(instance, dataRow[column.ColumnName], null);
+                    }
                     else
+                    {
                         continue;
+                    }
                 }
             }
 
@@ -168,14 +174,18 @@ namespace JO.Tools.Extensions
         public static string GetRouteController(this string? value)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 return string.Empty;
+            }
             return value.Split("/").Count() > 0 ? value.Split("/")[0] : string.Empty;
         }
 
         public static string GetRouteAction(this string? value)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 return string.Empty;
+            }
             return value.Split("/").Count() > 1 ? value.Split("/")[1] : string.Empty;
         }
     }

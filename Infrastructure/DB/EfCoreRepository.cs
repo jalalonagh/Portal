@@ -47,7 +47,9 @@ namespace Infrastructure.DB
         public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
         {
             if (entity == null)
+            {
                 return null;
+            }
 
             entity.ReNewConcurrency();
             entity.SetTimeNow();
@@ -59,7 +61,9 @@ namespace Infrastructure.DB
                 entity.SetEditor(sys);
             }
             else
+            {
                 entity.SetEditor(_currentUser.UserId);
+            }
 
             var savedEntity = (await unitOfWork._context.AddAsync(entity, cancellationToken).ConfigureAwait(false)).Entity;
 
@@ -75,12 +79,16 @@ namespace Infrastructure.DB
         public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
         {
             if (entities == null || !entities.Any())
+            {
                 return null;
+            }
 
             foreach (var item in entities)
             {
                 if (item == null)
+                {
                     return null;
+                }
 
                 item.ReNewConcurrency();
                 item.SetTimeNow();
@@ -92,7 +100,9 @@ namespace Infrastructure.DB
                     item.SetEditor(sys);
                 }
                 else
+                {
                     item.SetEditor(_currentUser.UserId);
+                }
             }
 
             await unitOfWork._context.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
@@ -111,12 +121,16 @@ namespace Infrastructure.DB
         public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
         {
             if (entity == null)
+            {
                 return null;
+            }
 
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
             if (ccy == null || entity.ConcurrencyStatus != ccy)
+            {
                 return null;
+            }
 
             entity.ReNewConcurrency();
             entity.SetTimeNow();
@@ -128,7 +142,9 @@ namespace Infrastructure.DB
                 entity.SetEditor(sys);
             }
             else
+            {
                 entity.SetEditor(_currentUser.UserId);
+            }
 
             if (dbset.Local.All(e => e != entity))
             {
@@ -148,7 +164,9 @@ namespace Infrastructure.DB
         public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
         {
             if (entities == null || !entities.Any())
+            {
                 return null;
+            }
 
             var items = await dbset.AsNoTracking()
                 .Where(w => entities.Select(s => s.Id).Contains(w.Id))
@@ -157,12 +175,16 @@ namespace Infrastructure.DB
             foreach (var item in entities)
             {
                 if (item == null)
+                {
                     return null;
+                }
 
                 var ccy = (items.FirstOrDefault(f => f.Id.Equals(item.Id)))?.ConcurrencyStatus;
 
                 if (ccy == null || item.ConcurrencyStatus != ccy)
+                {
                     return null;
+                }
 
                 item.ReNewConcurrency();
                 item.SetTimeNow();
@@ -174,7 +196,9 @@ namespace Infrastructure.DB
                     item.SetEditor(sys);
                 }
                 else
+                {
                     item.SetEditor(_currentUser.UserId);
+                }
             }
 
             unitOfWork._context.UpdateRange(entities);
@@ -195,7 +219,9 @@ namespace Infrastructure.DB
             var found = await dbset.Where(predict).ToListAsync(cancellationToken).ConfigureAwait(false);
 
             if (found == null || !found.Any())
+            {
                 return null;
+            }
 
             foreach (var entity in found)
             {
@@ -227,7 +253,9 @@ namespace Infrastructure.DB
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
             if (ccy == null || entity.ConcurrencyStatus != ccy)
+            {
                 throw new Exception("مقدار Concurency صحیح نمی باشد.");
+            }
 
             entity.SetTimeNow();
             entity.SetDeleted();
@@ -239,7 +267,9 @@ namespace Infrastructure.DB
                 entity.SetEditor(sys);
             }
             else
+            {
                 entity.SetEditor(_currentUser.UserId);
+            }
 
             unitOfWork._context.Update(entity);
 
@@ -255,7 +285,9 @@ namespace Infrastructure.DB
         public async Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = false)
         {
             if (entities == null || !entities.Any())
+            {
                 return null;
+            }
 
             var items = await dbset.AsNoTracking()
                 .Where(w => entities.Select(s => s.Id).Contains(w.Id))
@@ -266,7 +298,9 @@ namespace Infrastructure.DB
                 var ccy = (items.FirstOrDefault(f => f.Id.Equals(item.Id)))?.ConcurrencyStatus;
 
                 if (ccy == null || item.ConcurrencyStatus != ccy)
+                {
                     throw new Exception("یکی از مقادیر Concurency صحیح ندارد.");
+                }
 
                 item.SetTimeNow();
                 item.SetDeleted();
@@ -278,7 +312,9 @@ namespace Infrastructure.DB
                     item.SetEditor(sys);
                 }
                 else
+                {
                     item.SetEditor(_currentUser.UserId);
+                }
             }
 
             unitOfWork._context.UpdateRange(entities.Select(x => x));
@@ -312,8 +348,12 @@ namespace Infrastructure.DB
                 .Where(predicate);
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query
                 .FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -339,8 +379,12 @@ namespace Infrastructure.DB
                 .AsQueryable();
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -353,7 +397,9 @@ namespace Infrastructure.DB
                 .ConfigureAwait(false);
 
             if (order != null)
+            {
                 return (ApplyOrderDirection<TEntity>(items.AsQueryable(), order, asc)).ToList();
+            }
 
             return items;
         }
@@ -382,7 +428,9 @@ namespace Infrastructure.DB
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
 
             if (pagedRequest.Sorting != null)
+            {
                 items = (ApplyOrderDirection<TEntity>(items.AsQueryable(), pagedRequest.Sorting, pagedRequest.IsAsc ?? false)).ToList();
+            }
 
             return new PagedResult<TEntity>(count, items);
         }
@@ -399,7 +447,9 @@ namespace Infrastructure.DB
                 .ConfigureAwait(false);
 
             if (order != null)
+            {
                 return (ApplyOrderDirection<TEntity>(items.AsQueryable(), order, asc)).ToList();
+            }
 
             return items;
         }
@@ -415,8 +465,12 @@ namespace Infrastructure.DB
                 .AsQueryable();
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -438,7 +492,9 @@ namespace Infrastructure.DB
                 .ToList();
 
             if (pagedRequest.Sorting != null)
+            {
                 items = (ApplyOrderDirection<TEntity>(items.AsQueryable(), pagedRequest.Sorting, pagedRequest.IsAsc ?? false)).ToList();
+            }
 
             return new PagedResult<TEntity>(count, items);
         }
@@ -455,15 +511,21 @@ namespace Infrastructure.DB
                 .AsQueryable();
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     query = query.Include(item);
+                }
+            }
 
             var items = await query
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             if (order != null)
+            {
                 return (ApplyOrderDirection<TEntity>(items.AsQueryable(), order, asc)).ToList();
+            }
 
             return items;
         }
@@ -480,8 +542,12 @@ namespace Infrastructure.DB
             var count = await queryable.CountAsync(cancellationToken).ConfigureAwait(false);
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     queryable = queryable.Include(item);
+                }
+            }
 
             var items = await queryable
                 .Skip(pagedRequest.SkipCount ?? 0)
@@ -489,7 +555,9 @@ namespace Infrastructure.DB
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
 
             if (pagedRequest.Sorting != null)
+            {
                 items = (ApplyOrderDirection<TEntity>(items.AsQueryable(), pagedRequest.Sorting, pagedRequest.IsAsc ?? false)).ToList();
+            }
 
             return new PagedResult<TEntity>(count, items);
         }
@@ -505,8 +573,12 @@ namespace Infrastructure.DB
             var count = await queryable.CountAsync(cancellationToken).ConfigureAwait(false);
 
             if (includes != null && includes.Any())
+            {
                 foreach (var item in includes)
+                {
                     queryable = queryable.Include(item);
+                }
+            }
 
             var items = await queryable
                 .Skip(pagedRequest.SkipCount ?? 0)
@@ -514,7 +586,9 @@ namespace Infrastructure.DB
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
 
             if (pagedRequest.Sorting != null)
+            {
                 items = (ApplyOrderDirection<TEntity>(items.AsQueryable(), pagedRequest.Sorting, pagedRequest.IsAsc ?? false)).ToList();
+            }
 
             return new PagedResult<TEntity>(count, items);
         }
@@ -526,7 +600,9 @@ namespace Infrastructure.DB
                 .AsQueryable();
 
             if (predicate != null)
+            {
                 queryable = queryable.Where(predicate);
+            }
 
             var count = await queryable.CountAsync(cancellationToken).ConfigureAwait(false);
 
@@ -546,7 +622,9 @@ namespace Infrastructure.DB
             var items = await queryable.ToListAsync(cancellationToken).ConfigureAwait(false);
 
             if (pagedRequest.Order != null)
+            {
                 items = (ApplyOrderDirection<TEntity>(items.AsQueryable(), pagedRequest.GetOrderKeys())).ToList();
+            }
 
             return new PagedResultV2<TEntity>(pagedRequest.Draw ?? 0, count, items, pagedRequest.GetOrderKeys());
         }
@@ -586,7 +664,9 @@ namespace Infrastructure.DB
         private IOrderedQueryable<TSource> ApplyOrderDirection<TSource>(IQueryable<TSource> source, List<KeyValuePair<string, bool>>? orders)
         {
             if (orders == null || !orders.Any())
+            {
                 return source as IOrderedQueryable<TSource>;
+            }
 
             if (orders.Count == 1)
             {
@@ -595,14 +675,20 @@ namespace Infrastructure.DB
                 var propInfo = typeof(TSource).GetProperty(f.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
                 if (propInfo == null)
+                {
                     throw new ArgumentException("ستون مورد نظر برای مرتب سازی وجود ندارد", f.Key);
+                }
 
                 Expression<Func<TSource, object>> orderExp = x => propInfo.GetValue(x, null);
 
                 if (f.Value)
+                {
                     return source.OrderBy(orderExp);
+                }
                 else
+                {
                     return source.OrderByDescending(orderExp);
+                }
             }
 
             if (orders.Count == 2)
@@ -612,28 +698,40 @@ namespace Infrastructure.DB
                 var propInfo = typeof(TSource).GetProperty(f.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
                 if (propInfo == null)
+                {
                     throw new ArgumentException("ستون مورد نظر برای مرتب سازی وجود ندارد", f.Key);
+                }
 
                 Expression<Func<TSource, object>> orderExp = x => propInfo.GetValue(x, null);
 
                 if (f.Value)
+                {
                     source = source.OrderBy(orderExp);
+                }
                 else
+                {
                     source = source.OrderByDescending(orderExp);
+                }
 
                 var l = orders.Last();
 
                 var proplInfo = typeof(TSource).GetProperty(l.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
                 if (proplInfo == null)
+                {
                     throw new ArgumentException("ستون مورد نظر برای مرتب سازی وجود ندارد", l.Key);
+                }
 
                 Expression<Func<TSource, object>> orderlExp = x => proplInfo.GetValue(x, null);
 
                 if (l.Value)
+                {
                     return source.OrderBy(orderlExp);
+                }
                 else
+                {
                     return source.OrderByDescending(orderlExp);
+                }
 
             }
             if (orders.Count > 2)
@@ -643,14 +741,20 @@ namespace Infrastructure.DB
                     var propertyInfo = typeof(TSource).GetProperty(item.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
                     if (propertyInfo == null)
+                    {
                         throw new ArgumentException("ستون مورد نظر برای مرتب سازی وجود ندارد", item.Key);
+                    }
 
                     Expression<Func<TSource, object>> orderExpression = x => propertyInfo.GetValue(x, null);
 
                     if (item.Value)
+                    {
                         source = source.OrderBy(orderExpression);
+                    }
                     else
+                    {
                         source = source.OrderByDescending(orderExpression);
+                    }
                 }
 
                 var l = orders.Last();
@@ -658,14 +762,20 @@ namespace Infrastructure.DB
                 var proplInfo = typeof(TSource).GetProperty(l.Key, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
                 if (proplInfo == null)
+                {
                     throw new ArgumentException("ستون مورد نظر برای مرتب سازی وجود ندارد", l.Key);
+                }
 
                 Expression<Func<TSource, object>> orderlExp = x => proplInfo.GetValue(x, null);
 
                 if (l.Value)
+                {
                     return source.OrderBy(orderlExp);
+                }
                 else
+                {
                     return source.OrderByDescending(orderlExp);
+                }
             }
 
             return source as IOrderedQueryable<TSource>;

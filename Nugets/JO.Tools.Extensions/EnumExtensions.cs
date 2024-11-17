@@ -8,7 +8,9 @@ namespace JO.Tools.Extensions
         public static IEnumerable<T> GetEnumValues<T>(this T input) where T : struct
         {
             if (!typeof(T).IsEnum)
+            {
                 throw new NotSupportedException();
+            }
 
             return Enum.GetValues(input.GetType()).Cast<T>();
         }
@@ -17,7 +19,9 @@ namespace JO.Tools.Extensions
             where T : struct
         {
             if (!typeof(T).IsEnum)
+            {
                 throw new NotSupportedException();
+            }
 
             return (T)Enum.ToObject(typeof(T), input);
 
@@ -25,11 +29,17 @@ namespace JO.Tools.Extensions
         public static IEnumerable<T> GetEnumFlags<T>(this T input) where T : struct
         {
             if (!typeof(T).IsEnum)
+            {
                 throw new NotSupportedException();
+            }
 
             foreach (var value in Enum.GetValues(input.GetType()))
+            {
                 if ((input as Enum).HasFlag(value as Enum))
+                {
                     yield return (T)value;
+                }
+            }
         }
 
         public static string ToDisplay(this Enum value, DisplayProperty property = DisplayProperty.Name)
@@ -38,7 +48,9 @@ namespace JO.Tools.Extensions
                 .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault() ?? null;
 
             if (attribute == null)
+            {
                 return value?.ToString() ?? "";
+            }
 
             var propValue = attribute?.GetType()?.GetProperty(property.ToString())?.GetValue(attribute, null) ?? "";
             return propValue?.ToString() ?? "";

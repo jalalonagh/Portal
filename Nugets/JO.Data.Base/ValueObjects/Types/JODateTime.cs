@@ -28,7 +28,9 @@ namespace JO.Data.Base.ValueObjects.Types
         public JODateTime(string? dateTime)
         {
             if (string.IsNullOrEmpty(dateTime))
+            {
                 throw new Exception($"مقدار ارسالی برای {nameof(dateTime)} خالی است.");
+            }
 
             if (!string.IsNullOrEmpty(dateTime))
             {
@@ -38,16 +40,25 @@ namespace JO.Data.Base.ValueObjects.Types
                 for (int idx = 0; idx < splited.Length; idx++)
                 {
                     if (idx > 0)
+                    {
                         date += "/";
+                    }
                     if (splited[idx].Length == 1)
+                    {
                         date += "0" + splited[idx];
-                    else date += splited[idx];
+                    }
+                    else
+                    {
+                        date += splited[idx];
+                    }
                 }
                 dateTime = date;
             }
 
             if (!Regex.IsMatch(dateTime, pattern1, RegexOptions.IgnoreCase) && !Regex.IsMatch(dateTime, pattern2, RegexOptions.IgnoreCase))
+            {
                 throw new Exception($"مقدار ارسالی برای {nameof(dateTime)} تاریخ نیست. تاریخ را به شمسی و صحیح ارسال کنید.");
+            }
 
             PersianCalendar pc = new PersianCalendar();
 
@@ -62,10 +73,14 @@ namespace JO.Data.Base.ValueObjects.Types
         public bool IsExpired()
         {
             if (Date == null)
+            {
                 throw new Exception("تاریخ مورد مقایسه مقدار ندارد");
+            }
 
             if (Date < DateTime.Now)
+            {
                 return true;
+            }
 
             return false;
         }
@@ -80,7 +95,9 @@ namespace JO.Data.Base.ValueObjects.Types
         public override void Validate()
         {
             if (Date != null && Date.Value.Year < 630)
+            {
                 throw new Exception("تاریخ مورد استفاده غیر مجاز است");
+            }
         }
 
         protected override void Update(JODateTime other)

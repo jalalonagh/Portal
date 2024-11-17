@@ -47,7 +47,7 @@ namespace JO.Data.Base.ValueObjects.Types
 
         public override void Validate()
         {
-            //throw new NotImplementedException();
+
         }
 
         public override string ToString()

@@ -77,7 +77,9 @@ namespace JO.Data.Base.ValueObjects.Types
                 var isNumeric = long.TryParse(postCode, out long n);
 
                 if (postCode == null || postCode.Length != 10 || !isNumeric)
+                {
                     throw new Exception("مقدار ارسالی کدپستی نیست");
+                }
 
                 var address = InqueryAddressByPostCodeAsync(postCode).Result;
 
@@ -106,7 +108,9 @@ namespace JO.Data.Base.ValueObjects.Types
         public override void Validate()
         {
             if (PostCode != null && (PostCode.Length > 10 || PostCode.Length < 10))
+            {
                 throw new Exception("کد پستی نا معتبر است");
+            }
         }
 
         public override string ToString()
@@ -114,17 +118,29 @@ namespace JO.Data.Base.ValueObjects.Types
             StringBuilder stringBuilder = new StringBuilder();
 
             if (string.IsNullOrEmpty(Country))
+            {
                 stringBuilder.Append(Country);
+            }
             if (string.IsNullOrEmpty(Province))
+            {
                 stringBuilder.Append("، " + Province);
+            }
             if (string.IsNullOrEmpty(City))
+            {
                 stringBuilder.Append("، " + City);
+            }
             if (string.IsNullOrEmpty(Street))
+            {
                 stringBuilder.Append("، " + Street);
+            }
             if (string.IsNullOrEmpty(No))
+            {
                 stringBuilder.Append("، " + No);
+            }
             if (string.IsNullOrEmpty(PostCode))
+            {
                 stringBuilder.Append("، " + PostCode);
+            }
 
             return stringBuilder.ToString();
         }

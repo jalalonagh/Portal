@@ -18,7 +18,7 @@ namespace Core.UserManager
 
         public override void Validate()
         {
-            //throw new NotImplementedException();
+
         }
     }
 

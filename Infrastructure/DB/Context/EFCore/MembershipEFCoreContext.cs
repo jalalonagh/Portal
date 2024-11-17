@@ -11,7 +11,7 @@ namespace Infrastructure.DB.Context.EFCore
     public class MembershipEFCoreContext : DbContext
     {
         private readonly IConfiguration _configuration;
-        public MembershipEFCoreContext(DbContextOptions<MembershipEFCoreContext> options, IConfiguration configuration) //TODO: V3117 Constructor parameter 'options' is not used.
+        public MembershipEFCoreContext(DbContextOptions<MembershipEFCoreContext> options, IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -66,12 +66,13 @@ namespace Infrastructure.DB.Context.EFCore
             foreach (var item in changedEntities)
             {
                 if (item.Entity == null)
+                {
                     continue;
+                }
                 var properties = item.Entity.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string));
                 foreach (var property in properties)
                 {
-                    var propName = property.Name;
                     var val = property.GetValue(item.Entity, null);
                     if (val != null && !string.IsNullOrEmpty(val.ToString()))
                     {

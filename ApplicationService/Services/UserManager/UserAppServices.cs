@@ -56,13 +56,9 @@ namespace ApplicationService.UserManager
             {
                 var token = _tokenService.CreateToken(dto.UserName, user.Id);
 
-                //var menus = await _activityAppServices.GetMenusByActivityAsync(cancellation, 6);
-
                 return new LoginVM()
                 {
                     Token = token,
-                    //User = mapper.Map<UserVM>(user),
-                    //Menus = menus
                 };
             }
 

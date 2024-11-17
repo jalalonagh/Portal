@@ -53,10 +53,14 @@ namespace JO.Tools.Helpers
                 typeof(DisplayAttribute), false) as DisplayAttribute[];
 
             if (descriptionAttributes == null || !descriptionAttributes.Any())
+            {
                 return string.Empty;
+            }
 
             if (descriptionAttributes[0].ResourceType != null)
+            {
                 return lookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
+            }
 
             return (descriptionAttributes.Any()) ? descriptionAttributes[0].Name : value.ToString();
         }

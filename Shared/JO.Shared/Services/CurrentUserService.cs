@@ -15,7 +15,9 @@ namespace JO.Shared.Services
             string token = (http?.HttpContext?.Request?.Headers["Authorization"].FirstOrDefault() ?? "").Split(" ").Last();
 
             if (!string.IsNullOrEmpty(token))
+            {
                 UserId = _tokenService.ValidateToken(token);
+            }
         }
     }
 }
