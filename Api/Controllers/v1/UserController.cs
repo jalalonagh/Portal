@@ -11,7 +11,6 @@ namespace Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [BaseAuthorize()]
     public class UserController : BaseApiController
     {
         private readonly IUserAppServices _services;
@@ -24,7 +23,7 @@ namespace Api.Controllers
         [HttpGet("[action]")]
         public async Task<ApiResult<UserVM?>> GetUserByTokenAsync(CancellationToken cancellation)
         {
-            return await _services.FindAsync<UserVM?>(cancellation, f => f.Id == UserId).ConfigureAwait(true);
+            return await _services.FindAsync(cancellation, UserId).ConfigureAwait(true);
         }
 
         [HttpPost]

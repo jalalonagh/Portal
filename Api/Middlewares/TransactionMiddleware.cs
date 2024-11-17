@@ -23,7 +23,8 @@ namespace Api.Middlewares
 
                     await _next(context);
 
-                    var result = await unitOfWork.SaveChangesAsync(default);
+                    await unitOfWork.SaveChangesAsync(default);
+
                     unitOfWork.CommitTransaction();
 
                     return Task.CompletedTask;

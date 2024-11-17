@@ -10,9 +10,7 @@ namespace ApplicationService.Extensions
         {
             services.AddAutoMapper(typeof(UserManagerProfile).Assembly);
 
-            services.AddScoped(typeof(IJOAppService<>), typeof(JOAppService<>));
-
-            var srvs = typeof(JOAppService<>).Assembly.GetTypes().Where(w => w.IsClass && !w.IsAbstract && !w.IsGenericType && w.GetInterface(nameof(IAppService)) != null);
+            var srvs = typeof(IAppService).Assembly.GetTypes().Where(w => w.IsClass && !w.IsAbstract && !w.IsGenericType && w.GetInterface(nameof(IAppService)) != null);
 
             foreach (var repository in srvs)
             {

@@ -5,26 +5,37 @@ using DataTransferObjects.ViewModels.UserManager;
 using JO.AutoMapper;
 using JO.Data.Base.Interfaces;
 using JO.Shared.Interfaces;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Identity;
 
 namespace ApplicationService.UserManager
 {
-    public class UserAppServices : JOAppService<User>, IUserAppServices
+    public class UserAppServices : IUserAppServices
     {
+        private readonly IJOMapper _mapper;
         private readonly UserManager<User> _manager;
         private readonly UserDomain _domain;
         private readonly ITokenService _tokenService;
+        private readonly IEfCoreRepository<User> repo;
 
         public UserAppServices(IJOMapper _mapper,
             DomainManager<User> _domainManager,
             IEfCoreRepository<User> _repo,
             UserDomain domain,
             UserManager<User> manager,
-            ITokenService tokenService) : base(_mapper, _repo, _domainManager)
+            ITokenService tokenService)
         {
             _domain = domain;
             _manager = manager;
             _tokenService = tokenService;
+            repo = _repo;
+        }
+
+        public async Task<UserVM?> FindAsync(CancellationToken cancellation, long id)
+        {
+            var result = await repo.FindAsync(cancellation, f => f.Id == id);
+
+            return _mapper.Map<UserVM>(result);
         }
 
         public async Task<LoginVM> LoginAsync(CancellationToken cancellation, LoginDTO dto)

@@ -4,8 +4,9 @@ using DataTransferObjects.ViewModels.UserManager;
 
 namespace ApplicationService.UserManager
 {
-    public interface IUserAppServices : IJOAppService<User>
+    public interface IUserAppServices
     {
+        Task<UserVM?> FindAsync(CancellationToken cancellation, long id);
         Task<LoginVM> LoginAsync(CancellationToken cancellation, LoginDTO dto);
         Task<string> LoginSwaggerAsync(CancellationToken cancellation, LoginSwaggerDTO dto);
     }
