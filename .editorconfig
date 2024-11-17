@@ -1,0 +1,6 @@
+﻿[*.cs]
+
+# Default severity for analyzer diagnostics with category 'Design'
+dotnet_analyzer_diagnostic.category-Design.severity = silent
+
+configure_await_analysis_mode = ui

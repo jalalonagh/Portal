@@ -1,0 +1,6 @@
+@SharedWebApi_HostAddress = http://localhost:5250
+
+GET {{SharedWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
