@@ -37,6 +37,7 @@ namespace Core
         public Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             foreach (var item in entities)
+            {
                 if (item == null)
                 {
                     throw new Exception("موجودیت بدون مقدار است");
@@ -45,6 +46,7 @@ namespace Core
                 {
                     item.Validate();
                 }
+            }
 
             return repository.DeleteManyAsync(cancellationToken, entities);
         }

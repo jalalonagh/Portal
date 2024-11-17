@@ -55,7 +55,7 @@ namespace JO.Data.Base.ValueObjects.Types
 
         public override void Validate()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
@@ -82,18 +82,7 @@ namespace JO.Data.Base.ValueObjects.Types
 
         protected override void Update(object parameter)
         {
-            if (parameter is byte[])
-            {
-
-            }
-            else if (parameter is string && Base64.IsValid(parameter.ToString()))
-            {
-
-            }
-            else if (parameter is Stream)
-            {
-
-            }
+            throw new NotImplementedException();
         }
 
         [Obsolete]

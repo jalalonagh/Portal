@@ -37,7 +37,9 @@ namespace JO.Response.Base
         private string GetOrderColumnName(List<KeyValuePair<string, bool>>? keys)
         {
             if (keys == null || !keys.Any())
+            {
                 return "";
+            }
 
             var names = keys.Select(k => GetOrderColumnFullName(k)).ToList();
 

@@ -55,7 +55,9 @@ namespace JO.Shared.Services
             var _Key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
 
             if (string.IsNullOrEmpty(token) || string.IsNullOrWhiteSpace(token))
+            {
                 return 0;
+            }
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -76,7 +78,9 @@ namespace JO.Shared.Services
             var id = jwtToken?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
             if (id != null && long.TryParse(id.Value, out long uid))
+            {
                 return long.Parse(id.Value ?? "0");
+            }
 
             return 0;
         }

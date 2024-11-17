@@ -13,7 +13,9 @@ namespace Infrastructure.Extensions
                 .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade)
                 .ToList();
             foreach (IMutableForeignKey fk in cascadeFKs)
+            {
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         public static void RegisterEntityTypeConfiguration(this ModelBuilder modelBuilder, params Assembly[] assemblies)

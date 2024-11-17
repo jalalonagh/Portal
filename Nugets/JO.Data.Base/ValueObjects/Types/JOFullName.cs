@@ -50,24 +50,24 @@ namespace JO.Data.Base.ValueObjects.Types
         [Obsolete]
         protected override void Update(object parameter)
         {
-
+            throw new NotImplementedException();
         }
 
         [Obsolete]
         protected override void Update(object parameter, object parameter2)
         {
-
+            throw new NotImplementedException();
         }
 
         [Obsolete]
         protected override void Update(object parameter, object parameter2, object parameter3)
         {
-
+            throw new NotImplementedException();
         }
 
         public override void Validate()
         {
-
+            throw new NotImplementedException();
         }
 
         public override string ToString()

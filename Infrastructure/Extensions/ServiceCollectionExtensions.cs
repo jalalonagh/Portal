@@ -32,7 +32,9 @@ namespace Infrastructure.Extensions
             {
                 var interfaceType = repository.GetInterfaces().FirstOrDefault(f => f.Name == $"I{repository.Name}");
                 if (interfaceType != null)
+                {
                     services.AddScoped(interfaceType, repository);
+                }
             }
 
             return services;

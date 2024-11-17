@@ -44,7 +44,7 @@ namespace Infrastructure.DB
         }
 
         #region Insert
-        public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
             {
@@ -67,16 +67,12 @@ namespace Infrastructure.DB
 
             var savedEntity = (await unitOfWork._context.AddAsync(entity, cancellationToken).ConfigureAwait(false)).Entity;
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? savedEntity : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return savedEntity;
+            return result >= 1 ? savedEntity : null;
         }
 
-        public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -107,18 +103,14 @@ namespace Infrastructure.DB
 
             await unitOfWork._context.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= entities.Count() ? entities : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entities;
+            return result >= entities.Count() ? entities : null;
         }
         #endregion
 
         #region Edit
-        public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity)
         {
             if (entity == null)
             {
@@ -152,16 +144,12 @@ namespace Infrastructure.DB
                 unitOfWork._context.Update(entity);
             }
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? entity : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entity;
+            return result >= 1 ? entity : null;
         }
 
-        public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -203,18 +191,14 @@ namespace Infrastructure.DB
 
             unitOfWork._context.UpdateRange(entities);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= entities.Count() ? entities : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entities;
+            return result >= entities.Count() ? entities : null;
         }
         #endregion
 
         #region Delete
-        public async Task<List<TEntity>?> DeleteDirectAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predict, bool autoSave = true)
+        public async Task<List<TEntity>?> DeleteDirectAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predict)
         {
             var found = await dbset.Where(predict).ToListAsync(cancellationToken).ConfigureAwait(false);
 
@@ -234,21 +218,19 @@ namespace Infrastructure.DB
                     entity.SetEditor(sys);
                 }
                 else
+                {
                     entity.SetEditor(_currentUser.UserId);
+                }
             }
 
             unitOfWork._context.UpdateRange(found);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? found : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return found;
+            return result >= 1 ? found : null;
         }
 
-        public async Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity)
         {
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
@@ -273,16 +255,12 @@ namespace Infrastructure.DB
 
             unitOfWork._context.Update(entity);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? entity : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entity;
+            return result >= 1 ? entity : null;
         }
 
-        public async Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = false)
+        public async Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -319,13 +297,9 @@ namespace Infrastructure.DB
 
             unitOfWork._context.UpdateRange(entities.Select(x => x));
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= entities.Count() ? entities : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entities;
+            return result >= entities.Count() ? entities : null;
         }
         #endregion
 

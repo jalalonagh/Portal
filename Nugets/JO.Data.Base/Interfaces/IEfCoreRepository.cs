@@ -11,29 +11,26 @@ namespace JO.Data.Base.Interfaces
         DbSet<T> GetDb<T>() where T : class, IJOEntity;
 
         #region Insert
-        Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true);
+        Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity);
 
         Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken,
-            IEnumerable<TEntity> entities,
-            bool autoSave = true);
+            IEnumerable<TEntity> entities);
         #endregion
 
         #region Edit
-        Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true);
+        Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity);
 
         Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken,
-            IEnumerable<TEntity> entities,
-            bool autoSave = true);
+            IEnumerable<TEntity> entities);
         #endregion
 
         #region Delete
-        Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true);
+        Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity);
 
         Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken,
-            IEnumerable<TEntity> entities,
-            bool autoSave = true);
+            IEnumerable<TEntity> entities);
 
-        Task<List<TEntity>?> DeleteDirectAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predict, bool autoSave = true);
+        Task<List<TEntity>?> DeleteDirectAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predict);
         #endregion
 
         #region Find
