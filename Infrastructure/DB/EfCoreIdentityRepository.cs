@@ -34,7 +34,7 @@ namespace Infrastructure.DB
         }
 
         #region Insert
-        public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity)
         {
             entity.ReNewConcurrency();
 
@@ -42,16 +42,12 @@ namespace Infrastructure.DB
 
             var savedEntity = (await dbset.AddAsync(entity, cancellationToken).ConfigureAwait(false)).Entity;
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? savedEntity : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return savedEntity;
+            return result >= 1 ? savedEntity : null;
         }
 
-        public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public async Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -66,18 +62,14 @@ namespace Infrastructure.DB
 
             await dbset.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= entities.Count() ? entities : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entities;
+            return result >= entities.Count() ? entities : null;
         }
         #endregion
 
         #region Edit
-        public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity)
         {
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
@@ -95,16 +87,12 @@ namespace Infrastructure.DB
                 context.Update(entity);
             }
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? entity : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entity;
+            return result >= 1 ? entity : null;
         }
 
-        public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = true)
+        public async Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -130,18 +118,14 @@ namespace Infrastructure.DB
 
             context.UpdateRange(entities);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= entities.Count() ? entities : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entities;
+            return result >= entities.Count() ? entities : null;
         }
         #endregion
 
         #region Delete
-        public async Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true)
+        public async Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity)
         {
             var ccy = (await dbset.AsNoTracking().FirstOrDefaultAsync(f => f.Id.Equals(entity.Id)).ConfigureAwait(false))?.ConcurrencyStatus;
 
@@ -154,16 +138,12 @@ namespace Infrastructure.DB
 
             dbset.Remove(entity);
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= 1 ? entity : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entity;
+            return result >= 1 ? entity : null;
         }
 
-        public async Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities, bool autoSave = false)
+        public async Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken, IEnumerable<TEntity> entities)
         {
             if (entities == null || !entities.Any())
             {
@@ -188,13 +168,9 @@ namespace Infrastructure.DB
 
             context.RemoveRange(entities.Select(x => x));
 
-            if (autoSave)
-            {
-                var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                return result >= entities.Count() ? entities : null;
-            }
+            var result = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return entities;
+            return result >= entities.Count() ? entities : null;
         }
         #endregion
 
@@ -281,7 +257,7 @@ namespace Infrastructure.DB
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest)
+        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest)
         {
             var queryable = dbset
                 .AsNoTracking();
@@ -341,7 +317,7 @@ namespace Infrastructure.DB
         }
 
         public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate)
         {
             var queryable = dbset
@@ -391,7 +367,7 @@ namespace Infrastructure.DB
         }
 
         public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, string>>[] includes)
         {

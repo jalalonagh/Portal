@@ -13,27 +13,24 @@ namespace JO.Data.Base.Interfaces
         DbSet<TEntity> GetEntity();
 
         #region Insert
-        Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true);
+        Task<TEntity?> InsertAsync(CancellationToken cancellationToken, TEntity entity);
 
         Task<IEnumerable<TEntity>?> InsertManyAsync(CancellationToken cancellationToken,
-            IEnumerable<TEntity> entities,
-            bool autoSave = true);
+            IEnumerable<TEntity> entities);
         #endregion
 
         #region Edit
-        Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true);
+        Task<TEntity?> UpdateAsync(CancellationToken cancellationToken, TEntity entity);
 
         Task<IEnumerable<TEntity>?> UpdateManyAsync(CancellationToken cancellationToken,
-            IEnumerable<TEntity> entities,
-            bool autoSave = true);
+            IEnumerable<TEntity> entities);
         #endregion
 
         #region Delete
-        Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity, bool autoSave = true);
+        Task<TEntity?> DeleteAsync(CancellationToken cancellationToken, TEntity entity);
 
         Task<IEnumerable<TEntity>?> DeleteManyAsync(CancellationToken cancellationToken,
-            IEnumerable<TEntity> entities,
-            bool autoSave = true);
+            IEnumerable<TEntity> entities);
         #endregion
 
         #region Find
@@ -52,7 +49,7 @@ namespace JO.Data.Base.Interfaces
 
         Task<IEnumerable<TEntity>?> GetListAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate);
 
-        Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest);
+        Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest);
 
         Task<IEnumerable<TEntity>?> GetListAsync(CancellationToken cancellationToken,
             Expression<Func<TEntity, bool>> predicate,
@@ -64,7 +61,7 @@ namespace JO.Data.Base.Interfaces
             params Expression<Func<TEntity, string>>[] includes);
 
         Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate);
 
         Task<IEnumerable<TEntity>?> GetListAsync(CancellationToken cancellationToken,
@@ -74,7 +71,7 @@ namespace JO.Data.Base.Interfaces
             params Expression<Func<TEntity, string>>[] includes);
 
         Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate,
             params Expression<Func<TEntity, string>>[] includes);
         #endregion

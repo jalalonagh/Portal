@@ -92,7 +92,9 @@ namespace Infrastructure.Extensions
         public static string FixPersianChars(this string str)
         {
             if (string.IsNullOrEmpty(str))
+            {
                 return str;
+            }
             return str.Replace("ﮎ", "ک")
                 .Replace("ﮏ", "ک")
                 .Replace("ﮐ", "ک")
@@ -123,7 +125,7 @@ namespace Infrastructure.Extensions
                 .Replace("٧", "7")
                 .Replace("٨", "8")
                 .Replace("٩", "9")
-                .Trim();//.Replace("ئ", "ی");
+                .Trim();
         }
 
         public static string NullIfEmpty(this string str)

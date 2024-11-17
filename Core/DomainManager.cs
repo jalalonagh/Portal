@@ -87,7 +87,7 @@ namespace Core
             return await repository.GetListAsync(cancellationToken, predicate).ConfigureAwait(false);
         }
 
-        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest)
+        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest)
         {
             return await repository.GetListAsync(cancellationToken, pagedRequest).ConfigureAwait(false);
         }
@@ -102,7 +102,7 @@ namespace Core
             return await repository.GetListAsync(cancellationToken, predicate, includes).ConfigureAwait(false);
         }
 
-        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest, Expression<Func<TEntity, bool>> predicate)
+        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest, Expression<Func<TEntity, bool>> predicate)
         {
             return await repository.GetListAsync(cancellationToken, pagedRequest, predicate).ConfigureAwait(false);
         }
@@ -112,7 +112,7 @@ namespace Core
             return await repository.GetListAsync(cancellationToken, predicate, order, asc, includes).ConfigureAwait(false);
         }
 
-        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest, Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest, Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
             return await repository.GetListAsync(cancellationToken, pagedRequest, predicate, includes).ConfigureAwait(false);
         }

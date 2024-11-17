@@ -2,8 +2,7 @@
 
 namespace JO.Data.Base
 {
-    public class PagedRequest<TEntity>
-        where TEntity : class, IJOEntity
+    public class PagedRequest
     {
         public int? SkipCount { get; set; } = 0;
         public int? MaxResultCount { get; set; } = int.MaxValue;

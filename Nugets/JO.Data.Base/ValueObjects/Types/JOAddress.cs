@@ -147,7 +147,7 @@ namespace JO.Data.Base.ValueObjects.Types
 
         private async Task<JOAddress> InqueryAddressByPostCodeAsync(string postCode)
         {
-            return default;
+            throw new NotImplementedException();
         }
     }
 }

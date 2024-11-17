@@ -49,7 +49,7 @@ namespace JO.Data.Base.Interfaces
 
         Task<IEnumerable<TEntity>?> GetListAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate);
 
-        Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest);
+        Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest);
 
         Task<IEnumerable<TEntity>?> GetListAsync(CancellationToken cancellationToken,
             Expression<Func<TEntity, bool>> predicate,
@@ -61,7 +61,7 @@ namespace JO.Data.Base.Interfaces
             params string[] includes);
 
         Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate);
 
         Task<IEnumerable<TEntity>?> GetListAsync(CancellationToken cancellationToken,
@@ -71,12 +71,12 @@ namespace JO.Data.Base.Interfaces
             params string[] includes);
 
         Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate,
             params string[] includes);
 
         Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             params string[] includes);
         Task<PagedResultV2<TEntity>?> GetListV2Async(CancellationToken cancellationToken, PagedRequestV2 pagedRequest, Expression<Func<TEntity, bool>>? predicate = null);
 

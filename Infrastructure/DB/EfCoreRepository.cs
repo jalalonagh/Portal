@@ -389,7 +389,7 @@ namespace Infrastructure.DB
             return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest<TEntity> pagedRequest)
+        public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken, PagedRequest pagedRequest)
         {
             var queryable = dbset
                 .AsNoTracking();
@@ -450,7 +450,7 @@ namespace Infrastructure.DB
         }
 
         public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate)
         {
             var queryable = dbset
@@ -505,7 +505,7 @@ namespace Infrastructure.DB
         }
 
         public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             Expression<Func<TEntity, bool>> predicate,
             params string[] includes)
         {
@@ -537,7 +537,7 @@ namespace Infrastructure.DB
         }
 
         public async Task<PagedResult<TEntity>?> GetListAsync(CancellationToken cancellationToken,
-            PagedRequest<TEntity> pagedRequest,
+            PagedRequest pagedRequest,
             params string[] includes)
         {
             var queryable = dbset
